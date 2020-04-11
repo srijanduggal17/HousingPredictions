@@ -21,3 +21,9 @@ Relevant Files (in Google Drive folder) - see notebook notes/contents to underst
 - agg_feat_info_clipped.csv: result from Exploring Cleaned Series Results notebook
 - clipped_county_table.csv: result from Exploring Cleaned Series Results notebook
 - clipped_series_table.csv: result from Exploring Cleaned Series Results notebook
+
+Next Steps
+- Get all target series
+- Get country level features
+- Get state level features
+- Decide which county-level features to use (meeting on Monday)
