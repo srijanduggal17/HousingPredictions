@@ -1,8 +1,9 @@
 # HousingPredictions
-Final Group Project for CS7643/4803. Using Deep Learning to predict future housing values. 
-Data files (csv) are in the google drive
+Final Group Project for CS7643/4803. Using Deep Learning to predict future housing values.</br>
+Data files (csv) are in the google drive</br>
+Conda environment can be cloned using environment.txt and this link has instructions: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#building-identical-conda-environments
 
-Notebooks:
+Notebooks (read in order):
 - API Fred: Messing around with all the api functions that might be needed
 - Make State Table: Create the table to store the state id and the state name
 - Make County Table: Create the table to store the county name, county id, and corresponding state id. It will be used to pull state-level information into our examples for each county
