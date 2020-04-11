@@ -10,4 +10,14 @@ Notebooks (read in order):
 - Make Series Table: Create the table to store the series id, county id, and series metadata. It will be used to make decisions on which features to use and then to request the corresponding series from the Fred API
 - Remove Duplicates: This notebook is for removing duplicates from the county and series tables
 - Clean Series Table: This notebook was for cleaning the series table and creating an aggregate dataset to make decisions on which features to use
+- Exploring Cleaned Series Results: This notebook was for exploring the cleaned series table and removing counties for which there are no targets
 - Get Fred Data: This notebook can be ignored. It was before I realized there was an API for Fred and I was trying to make a web scraping thing (i didn't want to delete it tho)
+
+Relevant Files (in Google Drive folder) - see notebook notes/contents to understand these files
+- state_table.csv: result from Make State Table notebook
+- county_table_dedup.csv: result from Remove Duplicates notebook
+- series_table_dedup.csv: result from Remove Duplicates notebook
+- aggregated_feature_info.csv: result from Clean Series Table notebook
+- agg_feat_info_clipped.csv: result from Exploring Cleaned Series Results notebook
+- clipped_county_table.csv: result from Exploring Cleaned Series Results notebook
+- clipped_series_table.csv: result from Exploring Cleaned Series Results notebook
