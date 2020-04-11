@@ -1,5 +1,6 @@
 # HousingPredictions
 Final Group Project for CS7643/4803. Using Deep Learning to predict future housing values. 
+Data files (csv) are in the google drive
 
 Notebooks:
 - API Fred: Messing around with all the api functions that might be needed
