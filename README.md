@@ -12,6 +12,7 @@ Notebooks (read in order):
 - Clean Series Table: This notebook was for cleaning the series table and creating an aggregate dataset to make decisions on which features to use
 - Exploring Cleaned Series Results: This notebook was for exploring the cleaned series table and removing counties for which there are no targets
 - Make State Level Series Table: Create the table to store the series id, state id, and series metadata. Aggregate all state-level series by feature name to make decisions on which features to use
+- Get Country Level Features: Create the table to store the series id and series metadata for country level features. Get the full series data for each feature.
 - Get Fred Data: This notebook can be ignored. It was before I realized there was an API for Fred and I was trying to make a web scraping thing (i didn't want to delete it tho)
 
 Relevant Files (in Google Drive folder) - see notebook notes/contents to understand these files
@@ -24,9 +25,11 @@ Relevant Files (in Google Drive folder) - see notebook notes/contents to underst
 - clipped_series_table.csv: result from Exploring Cleaned Series Results notebook
 - state_series_table_all.csv: result from Make State Level Series Table notebook
 - agg_state_feat_info.csv: result from Make State Level Series Table notebook
+- country_series_table.csv: result from Get Country Level Features notebook
+- country_features.csv: result from Get Country Level Features notebook
 
 Next Steps
 - Get all target series
-- Get country level features
+- ~~Get country level features~~
 - ~~Get state level features~~
 - Decide which county-level features to use (meeting on Monday)
