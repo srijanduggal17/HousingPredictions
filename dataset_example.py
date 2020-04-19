@@ -1,18 +1,45 @@
 from datetime import datetime
 import torch
 from torch.utils.data import DataLoader
-from utils.data.CountyDataset import CountyDataset
+from utils.data.CountyDataset import (
+    CountyDataset,
+)
 
 
-def main():
+def get_dataset(master_path):
+    dataset = CountyDataset(master_path)
+    X, Y = next(iter(dataset))
+
     print('-'*89)
-    print('Dataset Processing Example')
+    print('Total Dataset Summary')
     print('-'*89)
 
-    master_path = 'data/master_county_state_reference.csv'
-    mbatch = 128
-    num_workers = 4
+    print(f'total samples {len(dataset):,} '
+          f'X {X.size()} | Y {Y.size()}')
 
+    return dataset
+
+
+def get_numpy(dataset):
+    data = []
+    for i in range(len(dataset)):
+        X, Y = dataset[i]
+        data.append((X.numpy(), Y.numpy()))
+
+    print('-'*89)
+    print(f'Numpy Dataset Summary')
+    print('-'*89)
+    X, Y = zip(*data)
+    print(f'total samples {len(X)} '
+          f'| input time periods {len(X[0])} '
+          f'| input features {X[0].shape[1]} '
+          f'| output time periods {len(Y[0])}'
+          f'| target col {dataset.target_col}')
+
+    return data, dataset.xcols, dataset.target_col, dataset.date_index
+
+
+def check_batches(master_path, mbatch=128, num_workers=4):
     if torch.cuda.is_available():
         device = torch.device('cuda')
         pin_memory = True
@@ -25,11 +52,8 @@ def main():
           f'| minibatch {mbatch}'
           f'| pin_memory {pin_memory}')
 
-    dataset = CountyDataset(master_path)
-    print(f'dataset samples {len(dataset):,}')
-
-    X, Y = next(iter(dataset))
-    print(f'X {X.size()} | Y {Y.size()}')
+    dataset = get_dataset(master_path)
+    get_numpy(dataset)
 
     print(f'batching data...')
     loader = DataLoader(dataset, batch_size=mbatch,
@@ -42,6 +66,15 @@ def main():
 
     elapsed = (datetime.now()-start).total_seconds()
     print(f'donzo... loaded {i} batches in {elapsed:,.0f} seconds')
+
+
+def main():
+    print('-'*89)
+    print('Dataset Processing Example')
+    print('-'*89)
+
+    master_path = 'data/master_county_state_reference.csv'
+    check_batches(master_path)
 
 
 if __name__ == '__main__':

@@ -17,14 +17,11 @@ class CountyDataset(Dataset):
     def __init__(self, master_path, country='usa',
                  target_col='All-Transactions House Price Index',
                  Tback=20, Tfwd=10, transform=None):
-        # validate paths (some county data missing)
-        valid_locals = [join(self.COUNTY_DIR, f)
-                        for f in listdir(self.COUNTY_DIR)
-                        if isfile(join(self.COUNTY_DIR, f))]
+        # validate paths for missing data
+        valid_locals = self.get_valid_paths(path_type='county')
         county_ids = [int(splitext(basename(p))[0]) for p in valid_locals]
-        valid_states = [join(self.STATE_DIR, f)
-                        for f in listdir(self.STATE_DIR)
-                        if isfile(join(self.STATE_DIR, f))]
+
+        valid_states = self.get_valid_paths(path_type='state')
         state_ids = [int(splitext(basename(p))[0]) for p in valid_states]
 
         # load master reference file and filter valid counties
@@ -46,6 +43,7 @@ class CountyDataset(Dataset):
                                       parse_dates=['date'])
         self.transform = transform
         self.xcols = None
+        self.date_index = None
 
     def __len__(self):
         return len(self.df_master)
@@ -58,7 +56,7 @@ class CountyDataset(Dataset):
         county_id, state_id = self.df_master.loc[idx].values
         df_local = pd.read_csv(join(self.COUNTY_DIR, f'{county_id}.csv'),
                                dtype=np.float32, parse_dates=[0],
-                               na_values='.').dropna()
+                               na_values='.').ffill().bfill()
         df_local = df_local.rename(
             columns={'Unnamed: 0': 'date'}).set_index('date')
         df_out = pd.merge(self.df_country, df_local, on='date', how='outer',
@@ -67,7 +65,7 @@ class CountyDataset(Dataset):
         # read state data and merge with output
         df_state = pd.read_csv(join(self.STATE_DIR, f'{state_id}.csv'),
                                dtype=np.float32, parse_dates=[0],
-                               na_values='.').dropna()
+                               na_values='.').ffill().bfill()
         df_state = df_state.rename(
             columns={'Unnamed: 0': 'date'}).set_index('date')
 
@@ -82,12 +80,80 @@ class CountyDataset(Dataset):
         X = df_out.loc[:, df_out.columns.isin(self.xcols)].values
         Y = df_out[self.target_col].values
 
+        # store period
+        if self.date_index is None:
+            self.date_index = df_out.index
+
         # conditionally transform (standardize etc)
         if self.transform:
             X, Y = self.transform(X, Y)
 
-        # conver tto tensors
-        X = torch.tensor(X[:, :-self.Tfwd], dtype=torch.float)
+        # convert to tensors
+        X = torch.tensor(X[:-self.Tfwd, :], dtype=torch.float)
         Y = torch.tensor(Y[-self.Tfwd:], dtype=torch.float)
 
         return X, Y
+
+    def get_valid_paths(cls, path_type='state', verbose=True):
+        # valid path_types are 'state', 'county', 'country'
+        if path_type == 'county':
+            base_dir = cls.COUNTY_DIR
+        elif path_type == 'state':
+            base_dir = cls.STATE_DIR
+        elif path_type == 'country':
+            base_dir = cls.COUNTRY_DIR
+        else:
+            raise f'unk path_type {path_type}; must be [county|state|country]'
+
+        if verbose:
+            print('-'*89)
+            print(f'{path_type.upper()} DATA SUMMARY')
+            print('-'*89)
+
+        all_paths = [join(base_dir, f)
+                     for f in listdir(base_dir)
+                     if isfile(join(base_dir, f))]
+        has_nas = []
+        periods, feats = {}, {}
+        max_periods, max_feats = 0, 0
+        for p in all_paths:
+            df = pd.read_csv(p, dtype=np.float32, parse_dates=[0],
+                             na_values='.').ffill().bfill()
+            if df.isna().any(axis=1).sum() > 0:
+                has_nas.append(p)
+                if verbose:
+                    print(f'missing feature --> dropping {path_type} '
+                          f'| path {p} '
+                          f'| feature {df.columns[df.isna().any()]}')
+
+            period, feat = df.shape
+            if feat > max_feats:
+                max_feats = feat
+
+            if period > max_periods:
+                max_periods = period
+
+            if period not in periods:
+                periods[period] = 1
+            else:
+                periods[period] += 1
+
+            if feat not in feats:
+                feats[feat] = 1
+            else:
+                feats[feat] += 1
+
+        valid_paths = []
+        for p in all_paths:
+            df = pd.read_csv(p, dtype=np.float32, parse_dates=[0],
+                             na_values='.').ffill().bfill()
+            period, feat = df.shape
+            if period == max_periods and feat == max_feats \
+                    and p not in has_nas:
+                valid_paths.append(p)
+
+        if verbose:
+            print(f'valid count {len(valid_paths)} '
+                  f'| periods {max_periods} '
+                  f'| features {max_feats}')
+        return valid_paths
