@@ -1,2 +1,5 @@
 *.csv
 *.xlsx
+data/*
+__pycache__/
+*.py[cod]

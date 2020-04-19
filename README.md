@@ -13,6 +13,8 @@ Notebooks (read in order):
 - Exploring Cleaned Series Results: This notebook was for exploring the cleaned series table and removing counties for which there are no targets
 - Make State Level Series Table: Create the table to store the series id, state id, and series metadata. Aggregate all state-level series by feature name to make decisions on which features to use
 - Get Country Level Features: Create the table to store the series id and series metadata for country level features. Get the full series data for each feature.
+- Get Timeline for Chosen Features: Take all our country level features and trim them to a set of features and counties that share a timeline of data
+- Trim State Features to Timeline: Take all the state level features and trim them to the features and states that share the timeline dictated by the county-level features
 - Get Fred Data: This notebook can be ignored. It was before I realized there was an API for Fred and I was trying to make a web scraping thing (i didn't want to delete it tho)
 
 Relevant Files (in Google Drive folder) - see notebook notes/contents to understand these files
@@ -27,12 +29,8 @@ Relevant Files (in Google Drive folder) - see notebook notes/contents to underst
 - agg_state_feat_info.csv: result from Make State Level Series Table notebook
 - country_series_table.csv: result from Get Country Level Features notebook
 - country_features.csv: result from Get Country Level Features notebook
-
-Next Steps
-- Get all target series
-- ~~Get country level features~~
-- ~~Get state level features~~
-- Decide which county-level features to use (meeting on Monday)
-
+- county_features_trimmed.csv: result from Get Timeline for Chosen Features notebook
+- county_features_final.csv: the list of county-level features we will use and the corresponding FRED series that need to be retrieved from their API. Result from Trim State Features to Timeline notebook
+- state_features_final.csv: the list of state-level features we will use and the corresponding FRED series that need to be retrieved from their API. Result from Trim State Features to Timeline notebook
 
 This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.
