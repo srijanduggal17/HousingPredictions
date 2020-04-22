@@ -157,3 +157,37 @@ class CountyDataset(Dataset):
                   f'| periods {max_periods} '
                   f'| features {max_feats}')
         return valid_paths
+
+    def get_dfs(self):
+        dfs = []
+        for i in range(self.__len__()):
+            # read county data and merge with country
+            county_id, state_id = self.df_master.loc[i].values
+            df_local = pd.read_csv(join(self.COUNTY_DIR, f'{county_id}.csv'),
+                                   dtype=np.float32, parse_dates=[0],
+                                   na_values='.').ffill().bfill()
+            df_local = df_local.rename(
+                columns={'Unnamed: 0': 'date'}).set_index('date')
+            df_out = pd.merge(self.df_country, df_local,
+                              on='date', how='outer',
+                              suffixes=['_country', '_local']).ffill().bfill()
+
+            # read state data and merge with output
+            df_state = pd.read_csv(join(self.STATE_DIR, f'{state_id}.csv'),
+                                   dtype=np.float32, parse_dates=[0],
+                                   na_values='.').ffill().bfill()
+            df_state = df_state.rename(
+                columns={'Unnamed: 0': 'date'}).set_index('date')
+
+            # merge with output data
+            df_out = pd.merge(df_out, df_state, on='date',
+                              how='outer').ffill().bfill()
+
+            # split features and target into np arrays
+            if self.xcols is None:
+                self.xcols = [c for c in df_out.columns.values
+                              if c != self.target_col]
+            df_out = df_out[self.xcols+[self.target_col]]
+            dfs.append(df_out)
+
+        return dfs

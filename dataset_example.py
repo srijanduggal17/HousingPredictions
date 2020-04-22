@@ -68,13 +68,24 @@ def check_batches(master_path, mbatch=128, num_workers=4):
     print(f'donzo... loaded {i} batches in {elapsed:,.0f} seconds')
 
 
+def check_dfs(master_path):
+    print('-'*89)
+    print('CHECKING DATAFRAMES')
+    print('-'*89)
+    dataset = get_dataset(master_path)
+    dfs = dataset.get_dfs()
+    print(f'number of dataframes {len(dfs)}')
+    print(f'sample df...')
+    print(dfs[0])
+
+
 def main():
     print('-'*89)
     print('Dataset Processing Example')
     print('-'*89)
 
     master_path = 'data/master_county_state_reference.csv'
-    check_batches(master_path)
+    check_dfs(master_path)
 
 
 if __name__ == '__main__':
