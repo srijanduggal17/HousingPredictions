@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 
-class RNN(nn.module):
+class RNN(nn.Module):
     """
     Vanilla RNN
     """
@@ -41,8 +41,7 @@ class RNN(nn.module):
         X = X.permute(1, 0, 2)
         T, batch_size, D_in = X.size()
         hidden = X.new_zeros((self.L, batch_size, self.H),
-                             dtype=torch.float,
-                             device=self.device)
+                             dtype=torch.float, device=device)
 
         for t in range(T):
             self.rnn.flatten_parameters()
