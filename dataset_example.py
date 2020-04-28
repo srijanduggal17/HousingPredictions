@@ -73,10 +73,16 @@ def check_dfs(master_path):
     print('CHECKING DATAFRAMES')
     print('-'*89)
     dataset = get_dataset(master_path)
-    dfs = dataset.get_dfs()
-    print(f'number of dataframes {len(dfs)}')
-    print(f'sample df...')
-    print(dfs[0])
+    print(f'number of dataframes {len(dataset)}')
+    df = dataset._get_df(0)
+    print(df.head())
+    print(df.columns.values)
+    print(df)
+#     for ndx in range(len(dataset)):
+#         df = dataset._get_df(ndx)
+#         print(df.shape)
+#     print(f'sample df...')
+#     print(dfs[0])
 
 
 def main():

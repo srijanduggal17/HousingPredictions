@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 
-class RNN(nn.module):
+class RNN(nn.Module):
     """
     Vanilla RNN
     """
@@ -34,8 +34,8 @@ class RNN(nn.module):
     def forward(self, X):
         """
         X (batch_size, T, D_in): input minibatch
-
         returns
+        
         y_pred (batch_size, D_out): output prediction
         """
         X = X.permute(1, 0, 2)

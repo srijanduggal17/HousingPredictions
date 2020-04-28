@@ -175,10 +175,10 @@ FEDERAL_DROP_COLS = [
 
 
 class CountyDataset(Dataset):
-    DATA_DIR = 'data'
-    COUNTY_DIR = 'data/county'
-    STATE_DIR = 'data/state'
-    COUNTRY_DIR = 'data/country'
+    DATA_DIR = 'utils/data'
+    COUNTY_DIR = 'utils/data/county'
+    STATE_DIR = 'utils/data/state'
+    COUNTRY_DIR = 'utils/data/country'
 
     def __init__(self, master_path=None, df_master=None, country='usa',
                  target_col='Zillow Price Index', Tback=20, Tfwd=10,
@@ -202,7 +202,6 @@ class CountyDataset(Dataset):
             self.df_master = self.df_master[
                 self.df_master.state_id.isin(state_ids)]
             self.df_master = self.df_master.reset_index(drop=True)
-
         self.target_col = target_col
         self.Tback = Tback
         self.Tfwd = Tfwd
@@ -303,7 +302,7 @@ class CountyDataset(Dataset):
 
     def _get_state(self, state_id):
         # read state data
-        df_state = pd.read_csv(join(self.STATE_DIR, f'{state_id}.csv'),
+        df_state = pd.read_csv(join(self.STATE_DIR, f'{state_id}_zillow.csv'),
                                dtype=np.float32, parse_dates=[0],
                                na_values='.').ffill().bfill()
 
