@@ -34,14 +34,15 @@ class RNN(nn.Module):
     def forward(self, X):
         """
         X (batch_size, T, D_in): input minibatch
-
         returns
+        
         y_pred (batch_size, D_out): output prediction
         """
         X = X.permute(1, 0, 2)
         T, batch_size, D_in = X.size()
         hidden = X.new_zeros((self.L, batch_size, self.H),
-                             dtype=torch.float, device=device)
+                             dtype=torch.float,
+                             device=self.device)
 
         for t in range(T):
             self.rnn.flatten_parameters()
