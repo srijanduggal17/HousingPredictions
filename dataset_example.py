@@ -85,7 +85,7 @@ def main():
     print('-'*89)
 
     master_path = 'data/master_county_state_reference.csv'
-    check_dfs(master_path)
+    get_dataset(master_path)
 
 
 if __name__ == '__main__':
