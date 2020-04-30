@@ -37,8 +37,11 @@ For model creation/evaluation:
 - random_forest.py: The finalized random forest model
 - [results_plotting]Hyperparameter Plots: Plotting of the hyperparameter heatmaps for each dataset model combination
 
+Link to view list of features and a brief description: https://docs.google.com/spreadsheets/d/1yX5qohttdohDgZSLiX7vnL44KqtLH_4VUgqU1Qsvz78/edit?usp=sharing
+Link to view model results: https://docs.google.com/spreadsheets/d/1tXWqvpAQH8pWk_dcBkn7xfK9TyiygSPt4dgF_23QuHE/edit?usp=sharing
 Link to view learning curves: https://drive.google.com/drive/folders/1QF-U58S6pPQxYaY1iS3O9aoZi610mlmX?usp=sharing
 Link to view hyperparameter results: https://drive.google.com/drive/folders/1or1BbhLpo476xmVt6yRT_FfGZvVigRhq?usp=sharing
+
 
 Relevant Files (in Google Drive folder - this note is for team members) - see notebook notes/contents to understand these files
 - state_table.csv: result from Make State Table notebook
