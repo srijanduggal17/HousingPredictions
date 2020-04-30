@@ -90,8 +90,8 @@ def main():
     print('Dataset Processing Example')
     print('-'*89)
 
-    master_path = 'utils/data/master_county_state_reference.csv'
-    check_dfs(master_path)
+    master_path = 'data/master_county_state_reference.csv'
+    get_dataset(master_path)
 
 
 if __name__ == '__main__':

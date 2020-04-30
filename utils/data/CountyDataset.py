@@ -180,26 +180,28 @@ class CountyDataset(Dataset):
     STATE_DIR = 'utils/data/state'
     COUNTRY_DIR = 'utils/data/country'
 
-    def __init__(self, master_path, country='usa',
+    def __init__(self, master_path=None, df_master=None, country='usa',
                  target_col='Zillow Price Index', Tback=20, Tfwd=10,
                  standardize=True, stats=None):
-        # validate paths for missing data
-        valid_locals = self.get_valid_paths(path_type='county')
-        county_ids = [int(basename(p).split('_')[0]) for p in valid_locals]
+        if df_master is not None:
+            self.df_master = df_master
+        else:
+            # validate paths for missing data
+            valid_locals = self.get_valid_paths(path_type='county')
+            county_ids = [int(basename(p).split('_')[0]) for p in valid_locals]
 
-        valid_states = self.get_valid_paths(path_type='state')
-        state_ids = [int(splitext(basename(p))[0].split('_')[0]) for p in valid_states]
+            valid_states = self.get_valid_paths(path_type='state')
+            state_ids = [int(splitext(basename(p))[0]) for p in valid_states]
 
-        # load master reference file and filter valid counties
-        self.df_master = pd.read_csv(master_path,
-                                     usecols=['county_id', 'state_id'],
-                                     dtype=np.integer)
-        self.df_master = self.df_master[
-            self.df_master.county_id.isin(county_ids)]
-        self.df_master = self.df_master[
-            self.df_master.state_id.isin(state_ids)]
-        self.df_master = self.df_master.reset_index(drop=True)
-
+            # load master reference file and filter valid counties
+            self.df_master = pd.read_csv(master_path,
+                                         usecols=['county_id', 'state_id'],
+                                         dtype=np.integer)
+            self.df_master = self.df_master[
+                self.df_master.county_id.isin(county_ids)]
+            self.df_master = self.df_master[
+                self.df_master.state_id.isin(state_ids)]
+            self.df_master = self.df_master.reset_index(drop=True)
         self.target_col = target_col
         self.Tback = Tback
         self.Tfwd = Tfwd
@@ -272,7 +274,7 @@ class CountyDataset(Dataset):
 
     def _get_df(self, idx):
         county_id, state_id = self.df_master.loc[idx].values
-        
+
         # merge county with country data
         df_local = self._get_local(county_id)
         df_out = pd.merge(self.df_country, df_local, on='date', how='outer',
@@ -313,6 +315,7 @@ class CountyDataset(Dataset):
             df_state[v] = df_state[v].div(df_state[k], axis=0)
         return df_state
 
+    @classmethod
     def get_valid_paths(cls, path_type='state', verbose=True):
         # valid path_types are 'state', 'county', 'country'
         if path_type == 'county':
@@ -328,7 +331,7 @@ class CountyDataset(Dataset):
             print('-'*89)
             print(f'{path_type.upper()} DATA SUMMARY')
             print('-'*89)
-        
+
         all_paths = [join(base_dir, f)
                      for f in listdir(base_dir)
                      if isfile(join(base_dir, f))]
