@@ -1,6 +1,6 @@
 # HousingPredictions
 Using Deep Learning to predict future housing values.</br>
-Final Group Project for CS 7643/4803. >/br>
+Final Group Project for CS 7643/4803. </br>
 Group members were Krishan Bhakta, Srijan Duggal, Chris Fleisher, Pratyusha Karnati, and Anshul Tusnial
 
 Data files (csv) are in the google drive</br>
