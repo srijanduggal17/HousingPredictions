@@ -1,7 +1,8 @@
 # HousingPredictions
-Final Group Project for CS 7643/4803. Group members were Krishan Bhakta, Srijan Duggal, Chris Fleisher, Pratyusha Karnati, and Anshul Tusnial
-
 Using Deep Learning to predict future housing values.</br>
+Final Group Project for CS 7643/4803. >/br>
+Group members were Krishan Bhakta, Srijan Duggal, Chris Fleisher, Pratyusha Karnati, and Anshul Tusnial
+
 Data files (csv) are in the google drive</br>
 Conda environment can be cloned using environment.txt and this link has instructions: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#building-identical-conda-environments
 
