@@ -1,9 +1,12 @@
 # HousingPredictions
-Final Group Project for CS7643/4803. Using Deep Learning to predict future housing values.</br>
+Final Group Project for CS 7643/4803. Using Deep Learning to predict future housing values.</br>
 Data files (csv) are in the google drive</br>
 Conda environment can be cloned using environment.txt and this link has instructions: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#building-identical-conda-environments
 
-Notebooks (read in order):
+Notebooks/Python files (read in order):
+Unless indicated in brackets, all files are in master branch
+
+For dataset research: inside master branch under folder "Choosing our Features"
 - API Fred: Messing around with all the api functions that might be needed
 - Make State Table: Create the table to store the state id and the state name
 - Make County Table: Create the table to store the county name, county id, and corresponding state id. It will be used to pull state-level information into our examples for each county
@@ -17,7 +20,24 @@ Notebooks (read in order):
 - Trim State Features to Timeline: Take all the state level features and trim them to the features and states that share the timeline dictated by the county-level features
 - Get Fred Data: This notebook can be ignored. It was before I realized there was an API for Fred and I was trying to make a web scraping thing (i didn't want to delete it tho)
 
-Relevant Files (in Google Drive folder) - see notebook notes/contents to understand these files
+For dataset creation:
+- [county_state_data]Get County Features: Get the actual observations for each county-level feature
+- [county_state_data]Get Country Level Features: Get the actual observations for each country-level feature
+- [county_state_data]Get-State-Features: Get the actual observations for each state-level feature 
+- [data_agg]utils/data/CountyDataset.py: Combining the data into a Pytorch dataset format that can be used with a DataLoader
+- [data_agg]dataset_example.py: Example of how to use the CountyDataset
+- CountyDataset_KB.py: Combining the data into format that can be used with a Random Forest model
+- dataset_example_KB.py: Example of how to use the CountyDataset for a Random Forest model
+
+For model creation/evaluation:
+- [data_agg]models/RNN.py: The RNN architecture we built using Pytorch
+- [data_agg]models/LSTM.py: The LSTM architecture we built using Pytorch
+- [data_agg]model_training_stuff.ipynb: Training, Tuning, and Evaluating the baseline linear regression as well as the RNN and LSTM models
+- feature_selection.py: Using sequential forward feature selection and exhaustive sequential search on a random forest model
+- random_forest.py: The finalized random forest model
+- [results_plotting]Hyperparameter Plots: Plotting of the hyperparameter heatmaps for each dataset model combination
+
+Relevant Files (in Google Drive folder - this note is for team members) - see notebook notes/contents to understand these files
 - state_table.csv: result from Make State Table notebook
 - county_table_dedup.csv: result from Remove Duplicates notebook
 - series_table_dedup.csv: result from Remove Duplicates notebook
